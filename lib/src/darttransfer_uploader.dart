@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:http/http.dart';
-import 'package:wetransfer/src/networking/session.dart';
+import 'package:darttransfer/src/networking/session.dart';
 
 class DarttransferUploader {
   static const int WETRANSFER_DEFAULT_CHUNK_SIZE = 5242880;
