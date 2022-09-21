@@ -4,9 +4,7 @@ A simple Dart Wetransfer Client
 ## Support
 At the moment this client **only supports uploading files** to Wetransfer and receiving a short url download link
 
-## Roadmap
-- Email upload
-- Url download
+## Installing
 
 ## Usage
 ```dart
@@ -21,3 +19,8 @@ void main(List<String> arguments) async {
   ], displayName: "DisplayName", message: "Message");
 }
 ```
+
+## Roadmap
+- Email upload
+- Url download
+- **Unit Tests**
