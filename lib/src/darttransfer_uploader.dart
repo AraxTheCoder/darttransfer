@@ -36,22 +36,22 @@ class DarttransferUploader {
     Session session = await prepareSession();
 
     String transferId = await prepareLinkUpload(files, displayName, message, session);
-    print("Transfer Id: $transferId");
 
     for(String file in files){
       String fileId = await prepareFileUpload(transferId, file, session);
-      print("File Id for $file: $fileId");
       await uploadChunks(transferId, fileId, file, session);
     }
 
     String shortUrl = await finalizeUpload(transferId, session);
-    print(shortUrl);
 
     close(session);
 
     return shortUrl;
   }
 
+  /// Prepares the Session with the required cookies
+  /// 
+  /// Returns [Session]
   Future<Session> prepareSession() async {
     Session session = Session(
       defaultHeaders: {
@@ -77,7 +77,6 @@ class DarttransferUploader {
     String setCookie = res.headers['set-cookie']!;
 
     String? snowplowId0497 = setCookie.substring(0, setCookie.indexOf(";") + 1);
-    print("snowplowId0497 cookie: $snowplowId0497");
 
     session.addCookie("_wt_snowplowses.0497=*;");
     session.addCookie(snowplowId0497);
@@ -85,6 +84,7 @@ class DarttransferUploader {
     return session;
   }
 
+  /// Returns a [Map] with the filename and size
   Map<String, dynamic> fileNameAndSize(String filepath) {
     File file = File(filepath);
 
@@ -94,6 +94,9 @@ class DarttransferUploader {
     return {"item_type": "file", "name": filename, "size": filesize};
   }
 
+  /// Sends a prepare request containing the filesizes and names to wetransfer
+  /// 
+  /// Returns [transferId]
   Future<String> prepareLinkUpload(List<String> filenames, String displayName, String message, Session session) async {
     
     List<Map<String, dynamic>> files = [];
@@ -124,10 +127,11 @@ class DarttransferUploader {
     return jsonDecode(res.body)['id'];
   }
 
+  /// Sends a prepare request containing the specific filesize and name to wetransfer
+  /// 
+  /// Returns [fileId]
   Future<String> prepareFileUpload(String transferId, String file, Session session) async {
     Map<String, dynamic> data = fileNameAndSize(file);
-
-    print(data);
 
     var headers = {
       'authority': 'wetransfer.com',
@@ -147,12 +151,13 @@ class DarttransferUploader {
     };
 
     Response res = await session.post('https://wetransfer.com/api/v4/transfers/$transferId/files', jsonEncode(data), extraHeaders: headers);
-    print(res.body);
+
     if (res.statusCode != 200) throw Exception('http.post error: statusCode= ${res.statusCode}');
 
     return jsonDecode(res.body)['id']; 
   }
 
+  /// Uploads the [file] in chunks to wetransfer with the coresponding [transferId] ans [fileId]
   Future<void> uploadChunks(String transferId, String fileId, String file, Session session, {int defaultChunkSize = WETRANSFER_DEFAULT_CHUNK_SIZE}) async {
     RandomAccessFile raf = File(file).openSync(mode: FileMode.read);
 
@@ -227,6 +232,9 @@ class DarttransferUploader {
     });
   }
 
+  /// Sends a finalize request to wetransfer to end all transmissions
+  /// 
+  /// Returns [shortendUrl] of the download link
   Future<String> finalizeUpload(String transferId, Session session) async {
     Response res = await session.put('https://wetransfer.com/api/v4/transfers/$transferId/finalize', null, extraHeaders: {
       'authority': 'wetransfer.com',

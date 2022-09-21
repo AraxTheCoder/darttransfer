@@ -5,6 +5,14 @@ A simple Dart Wetransfer Client
 At the moment this client **only supports uploading files** to Wetransfer and receiving a short url download link
 
 ## Installing
+Download the project and save it on the disk.
+<br><br>
+Then add it to your pubspec.yaml like this:
+```yaml
+dependencies:
+  darttransfer:
+    path: ../path/to/package/darttransfer/
+```
 
 ## Usage
 ```dart
@@ -19,9 +27,3 @@ void main(List<String> arguments) async {
   ], displayName: "DisplayName", message: "Message");
 }
 ```
-
-## Roadmap
-- Email upload
-- Url download
-- **Unit Tests**
-- **More Documentation**
