@@ -21,9 +21,10 @@ import 'package:darttransfer/darttransfer.dart';
 void main(List<String> arguments) async {
   DarttransferUploader wetransferUploader = DarttransferUploader();
 
-  await wetransferUploader.upload([
-    "filepath/to/file/test.txt",
-    "filepath/to/file/test.zip"
+  String downloadUrl = await wetransferUploader.upload([
+    r"../test/res/simpleText.txt"
   ], displayName: "DisplayName", message: "Message");
+
+  print(downloadUrl);
 }
 ```
