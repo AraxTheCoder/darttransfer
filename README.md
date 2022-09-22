@@ -5,13 +5,23 @@ A simple Dart Wetransfer Client
 At the moment this client **only supports uploading files** to Wetransfer and receiving a short url download link
 
 ## Installing
-Download the project and save it on the disk.
+### Local
+Download the project and save it on your disk.
 <br><br>
 Then add it to your pubspec.yaml like this:
 ```yaml
 dependencies:
   darttransfer:
     path: ../path/to/package/darttransfer/
+```
+
+### Github
+```yaml
+dependencies:
+  darttransfer:
+    git:
+      url: https://github.com/AraxTheCoder/darttransfer
+      ref: main
 ```
 
 ## Usage
